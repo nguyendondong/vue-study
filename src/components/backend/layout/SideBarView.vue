@@ -1,5 +1,3 @@
-<script setup>
-</script>
 <template>
   <!-- Navigation Toggle -->
   <button type="button" class="text-gray-500 hover:text-gray-600" data-hs-overlay="#docs-sidebar" aria-controls="docs-sidebar" aria-label="Toggle navigation">
@@ -16,6 +14,7 @@
       <a class="flex-none text-xl font-semibold" href="#" aria-label="Brand">
         <img src="@/assets/images/backend/logo.png" alt="Logo" class="rounded-full w-20 h-20 overflow-auto mx-auto">
       </a>
+      <div class="text-xl mx-auto text-center">{{ profile.email }}</div>
     </div>
     <nav class="hs-accordion-group p-6 w-full flex flex-col flex-wrap" data-hs-accordion-always-open>
       <ul class="space-y-1.5">
@@ -23,6 +22,15 @@
           <a class="flex items-center gap-x-3.5 py-2 px-2.5 bg-gray-100 text-sm text-gray-700 rounded-lg hover:bg-gray-100" href="#">
             <svg class="size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
             Dashboard
+          </a>
+        </li>
+        <li>
+          <a href="#" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">
+            <span class="inline-flex justify-center items-center">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+            </span>
+            <span class="ml-2 text-sm tracking-wide truncate">Notifications</span>
+            <span class="px-2 py-0.5 ml-auto text-xs font-medium tracking-wide text-red-500 bg-red-50 rounded-full">1.2k</span>
           </a>
         </li>
 
@@ -175,6 +183,22 @@
   </div>
   <!-- End Sidebar -->
 </template>
+<script>
+import UserService from '@/service/user.service.ts'
+import { ref, onMounted } from 'vue'
 
-<style scoped>
-</style>
+export default {
+  setup() {
+    const profile = ref({});
+
+    onMounted(async () => {
+      const user = await UserService.Profile();
+      profile.value = user.data;
+    });
+
+    return {
+      profile
+    };
+  }
+}
+</script>

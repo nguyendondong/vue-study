@@ -1,31 +1,29 @@
-<script lang="ts">
-import axios from '@/config/axios.ts'
+<script setup lang="ts">
+import AuthService  from '@/service/auth.service.ts'
+import UserService from '@/service/user.service.ts'
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
-export default {
-  data() {
-    return {
-      email: '',
-      password: '',
-      rememberMe: false,
-      errors: {} as any,
-    }
-  },
-  methods: {
-    async HandleLogin() {
-      try {
-        await axios.post("auth/login", {
-          email: this.email,
-          password: this.password
-        }).then((response) => {
-          localStorage.setItem('access_token', response.data.access_token);
-          localStorage.setItem('refresh_token', response.data.refresh_token);
+const email = ref('')
+const password = ref('')
+const rememberMe = ref(false)
+const errors = ref({} as any)
+const router = useRouter()
 
-          if (response.status === 201) {
-            this.$router.push('/admin/dashboard')
-          }
-        })
-      } catch (error: any) {
-        this.errors = error.data.errors
+const HandleLogin = async () => {
+  {
+    try {
+      await AuthService.login(email.value, password.value, rememberMe.value).then(async () => {
+          await UserService.Profile()
+          await router.push('/admin/dashboard')
+      })
+    } catch (error: any) {
+      errors.value = {}
+      if (error.status === 403) {
+        errors.value.message =  error.data.errors
+      } else {
+        errors.value = error.data.errors
+
       }
     }
   }
@@ -41,6 +39,7 @@ export default {
               <h3 class="text-3xl font-extrabold">Sign in</h3>
               <p class="text-sm mt-4 ">Don't have an account <RouterLink to="/admin/register" class="text-blue-600 font-semibold hover:underline ml-1 whitespace-nowrap">Register here!</RouterLink></p>
             </div>
+            <p v-if="errors.message" class="text-red-500 text-xs">{{ errors.message }}</p>
             <div>
               <label class="text-xs block mb-2">Email</label>
               <div class="relative flex items-center">

@@ -1,38 +1,22 @@
-<script lang="ts">
-import axios from '@/config/axios.ts'
+<script setup lang="ts">
+import AuthService  from '@/service/auth.service.ts'
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
-export default {
-  data() {
-    return {
-      name: '',
-      email: '',
-      password: '',
-      confirm_password: '',
-      errors: {} as any,
+const name = ref('')
+const email = ref('')
+const password = ref('')
+const confirm_password = ref('')
+const errors = ref({} as any)
+const router = useRouter()
+
+const HandleRegister = async () => {
+    try{
+      await AuthService.register(name.value, email.value, password.value, confirm_password.value)
+      await router.push('/admin/login')
+    }catch (error: any) {
+      errors.value = error.data.errors
     }
-  },
-  methods: {
-    async HandleRegister() {
-      this.errors = {}
-      try{
-         const response = await axios.post("auth/register", {
-          name: this.name,
-          email: this.email,
-          password: this.password,
-          confirm_password: this.confirm_password
-        }, {
-          headers: {
-            'x-lang': "en"
-          }
-        })
-        if(response.status === 201) {
-          this.$router.push('/admin')
-        }
-      }catch (error: any) {
-        this.errors = error.data.errors
-      }
-    }
-  }
 }
 </script>
 <template>
@@ -43,7 +27,9 @@ export default {
           <form @submit.prevent="HandleRegister">
             <div class="mb-12">
               <h3 class="text-3xl font-extrabold">Register</h3>
-              <p class="text-sm mt-4 ">If have an account <RouterLink to="/admin" class="text-blue-600 font-semibold hover:underline ml-1 whitespace-nowrap">Login here!</RouterLink></p>
+              <p class="text-sm mt-4 ">If have an account
+                <RouterLink to="/admin" class="text-blue-600 font-semibold hover:underline ml-1 whitespace-nowrap">Login here!
+                </RouterLink></p>
             </div>
             <div>
               <label class="text-xs block mb-2">Name</label>

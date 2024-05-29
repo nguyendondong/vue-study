@@ -1,13 +1,15 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { type IStaticMethods } from "preline/preline";
+import { type IStaticMethods } from 'preline/preline'
+import BaseLayout from '@/components/backend/layout/BaseLayout.vue'
+
 declare global {
   interface Window {
-    HSStaticMethods: IStaticMethods;
+    HSStaticMethods: IStaticMethods
   }
 }
 import HomeView from '@/views/frontend/HomeView.vue'
 import LoginView from '@/views/backend/LoginView.vue'
-import DashboardView from '@/views/backend/DashboardView.vue'
+import DashboardView from '@/components/backend/layout/DashboardView.vue'
 import RegisterView from '@/views/backend/RegisterView.vue'
 
 const router = createRouter({
@@ -20,9 +22,22 @@ const router = createRouter({
     },
     {
       path: '/admin',
+      name: 'admin',
+      component: BaseLayout,
       children: [
         {
-          path: '',
+          path: 'dashboard',
+          name: 'dashboard',
+          component: DashboardView
+        }
+      ]
+    },
+
+    {
+      path: '/auth',
+      children: [
+        {
+          path: 'login',
           name: 'login',
           component: LoginView
         },
@@ -30,22 +45,28 @@ const router = createRouter({
           path: 'register',
           name: 'register',
           component: RegisterView
-        },
-        {
-          path: 'dashboard',
-          name: 'dashboard',
-          component: DashboardView
         }
       ]
     }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  if (to.name !== 'login' && !localStorage.getItem('access_token') && !to.path.includes('auth')) {
+    next({ name: 'login' })
+  } else if (to.name === 'admin') {
+    next({ name: 'dashboard' })
+  } else {
+    next()
+  }
+})
+
 router.afterEach((to, from, failure) => {
   if (!failure) {
     setTimeout(() => {
-      window.HSStaticMethods.autoInit();
+      window.HSStaticMethods.autoInit()
     }, 100)
   }
-});
+})
 
 export default router

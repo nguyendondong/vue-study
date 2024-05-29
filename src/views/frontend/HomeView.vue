@@ -1,9 +1,8 @@
-<script setup lang="ts">
-import TheWelcome from '../../components/TheWelcome.vue'
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <main>
-    <TheWelcome />
+    <h1 class="w-full flex justify-center items-center">Maintance Mode</h1>
+    <img src="/signin-image.webp" class="w-full h-full object-contain" alt="home" />
   </main>
 </template>

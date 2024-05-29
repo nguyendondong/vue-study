@@ -1,8 +1,7 @@
 <template>
   <div class="item test">
     <i>
-      <slot name="icon">
-      </slot>
+      <slot name="icon"> </slot>
     </i>
     <div class="details">
       <h3>

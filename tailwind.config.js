@@ -1,15 +1,14 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
-    "./index.html",
-    "./src/**/*.{js,ts,vue}",
-    './node_modules/preline/preline.js',
+    './index.html',
+    './src/**/*.{js,ts,vue}',
+    './src/config/formkit.theme.ts'
   ],
+  darkMode: 'class',
   theme: {
-    extend: {},
+    extend: {}
   },
-  plugins: [
-    require('preline/plugin'),
-  ],
+  plugins: []
 }
 

@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+#docs-sidebar .router-link-active {
+    background-color: #e9ecf1
+}

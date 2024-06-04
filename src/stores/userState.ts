@@ -1,14 +1,13 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import axios from '@/config/axios.ts'
 import { useRouter } from 'vue-router'
-import authHeader from '@/service/auth-header.ts'
+// import authHeader from '@/service/auth-header.ts'
 
 export const useUserState = defineStore('userState', () => {
   const user = ref<{
     email: string
   }>()
-  const isLoggedIn = ref(false)
   const router = useRouter()
 
   const login = async (email: string, password: string, rememberMe: boolean) => {
@@ -18,7 +17,6 @@ export const useUserState = defineStore('userState', () => {
       rememberMe: rememberMe
     })
     const { data } = response
-    isLoggedIn.value = true
     user.value = data.dataUser
     localStorage.setItem('access_token', data.access_token)
     localStorage.setItem('refresh_token', data.refresh_token)
@@ -31,14 +29,11 @@ export const useUserState = defineStore('userState', () => {
     localStorage.removeItem('access_token')
     localStorage.removeItem('refresh_token')
     localStorage.removeItem('user')
-    isLoggedIn.value = false
     user.value = undefined
   }
 
   const getProfile = async () => {
-    return await axios.get('users/profile', {
-      headers: authHeader.getAuthHeader()
-    })
+    return await axios.get('users/profile')
   }
 
   const register = async (
@@ -56,6 +51,10 @@ export const useUserState = defineStore('userState', () => {
 
     await router.push('/auth/login')
   }
+
+  const isLoggedIn = computed(() => {
+    return !!localStorage.getItem('access_token')
+  })
 
   return { user, isLoggedIn, login, logout, getProfile, register }
 })

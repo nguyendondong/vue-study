@@ -12,4 +12,10 @@ axios.interceptors.response.use(
 axios.defaults.withCredentials = true
 axios.defaults.baseURL = 'http://127.0.0.1:3000/api/v1/'
 
+axios.interceptors.request.use((config) => {
+  config.headers.Authorization = `Bearer ${localStorage.getItem('access_token')}`
+  return config
+})
+
+
 export default axios

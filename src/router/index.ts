@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { type IStaticMethods } from 'preline/preline'
-import BaseLayout from '@/components/backend/layout/BaseLayout.vue'
+import BaseLayout from '@/components/admin/layout/BaseLayout.vue'
 
 declare global {
   interface Window {
@@ -8,9 +8,10 @@ declare global {
   }
 }
 import HomeView from '@/views/frontend/HomeView.vue'
-import LoginView from '@/views/backend/LoginView.vue'
-import DashboardView from '@/components/backend/layout/DashboardView.vue'
-import RegisterView from '@/views/backend/RegisterView.vue'
+import LoginView from '@/views/admin/auth/LoginView.vue'
+import DashboardView from '@/views/admin/dashboard/DashboardView.vue'
+import RegisterView from '@/views/admin/auth/RegisterView.vue'
+import UserView from '@/views/admin/user/UserView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -22,13 +23,24 @@ const router = createRouter({
     },
     {
       path: '/admin',
-      name: 'admin',
+      name: 'Admin',
       component: BaseLayout,
       children: [
         {
           path: 'dashboard',
-          name: 'dashboard',
-          component: DashboardView
+          name: 'Dashboard',
+          component: DashboardView,
+          meta: {
+            requiresAuth: true,
+            headerTitle: 'Dashboard',
+            searchConfig: {},
+            storeConfig: {}
+          }
+        },
+        {
+          path: 'users',
+          name: 'Users',
+          component: UserView
         }
       ]
     },
@@ -38,12 +50,12 @@ const router = createRouter({
       children: [
         {
           path: 'login',
-          name: 'login',
+          name: 'Login',
           component: LoginView
         },
         {
           path: 'register',
-          name: 'register',
+          name: 'Register',
           component: RegisterView
         }
       ]
@@ -52,10 +64,10 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.name !== 'login' && !localStorage.getItem('access_token') && !to.path.includes('auth')) {
-    next({ name: 'login' })
-  } else if (to.name === 'admin') {
-    next({ name: 'dashboard' })
+  if (to.name !== 'Login' && !localStorage.getItem('access_token') && !to.path.includes('auth')) {
+    next({ name: 'Login' })
+  } else if (to.name === 'Admin') {
+    next({ name: 'Dashboard' })
   } else {
     next()
   }

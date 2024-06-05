@@ -1,11 +1,13 @@
 <script setup lang="ts">
+import { useUserState } from '@/stores/userState.ts'
 
-const email = defineModel('email', {
-  type: String
-})
+const userState = useUserState()
+const email = !userState.user
+  ? JSON.parse(localStorage.getItem('user') ?? '').email
+  : userState.user?.email
 </script>
 <template>
-  <div class="relative w-64 flex-shrink-0">
+  <div class="relative w-64 flex-shrink-0 py-3">
     <div id="docs-sidebar"
          class="bg-white border-r border-gray-200 w-64 relative h-[100vh]">
       <div class="px-6 mx-auto">

@@ -1,21 +1,23 @@
 import axios from 'axios'
 
+axios.defaults.withCredentials = true
+axios.defaults.baseURL = 'https://api.dondong.io.vn/api/v1/'
+
 axios.interceptors.response.use(
-  (response) => {
-    return response
-  },
-  (error) => {
-    return Promise.reject(error.response)
-  }
+  response => response,
+  error => Promise.reject(error.response)
 )
 
-axios.defaults.withCredentials = true
-axios.defaults.baseURL = 'http://127.0.0.1:3000/api/v1/'
-
-axios.interceptors.request.use((config) => {
-  config.headers.Authorization = `Bearer ${localStorage.getItem('access_token')}`
+axios.interceptors.request.use(config => {
+  config.headers.Accept = 'application/json'
+  config.headers['Access-Control-Allow-Origin'] = 'https://dondong.io.vn'
+  config.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS, DELETE, PUT, PATCH'
+  config.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, Origin'
+  const accessToken = localStorage.getItem('access_token')
+  if (accessToken) {
+    config.headers.Authorization = `Bearer ${accessToken}`
+  }
   return config
 })
-
 
 export default axios

@@ -1,4 +1,4 @@
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { defineStore } from 'pinia'
 import type { Page } from '@/utils/DefineType.ts'
 import axios from '@/config/axios.ts'
@@ -10,7 +10,7 @@ export const usePagination = defineStore('pagination', () => {
     prevPage: 0,
     lastPage: 0,
     total: 0,
-    perPage: 10
+    perPage: 8
   })
   const currentData = ref<any[]>([])
   const urlInfo = ref('')
@@ -20,7 +20,6 @@ export const usePagination = defineStore('pagination', () => {
       const urlData = `${urlInfo.value}?page=${page.value.currentPage}&limit=${page.value.perPage}`
       const response = await axios.get(urlData)
       setPageData(response.data)
-
     } catch (error) {
       console.log(error)
     }
@@ -31,10 +30,24 @@ export const usePagination = defineStore('pagination', () => {
     currentData.value = data.data
   }
 
-  const setCurrentPage = (pageNumber: number, perPage: number) => {
+  const UpdatePageData = (pageNumber: number, perPage: number) => {
     page.value.currentPage = pageNumber ?? page.value.currentPage
     page.value.perPage = perPage ?? page.value.perPage
   }
+
+
+  const pagesToShow = computed(() => {
+    const range = 5
+    const start = Math.max(page.value.currentPage - range, 1)
+    const end = Math.min(page.value.currentPage + range, page.value.lastPage)
+
+    const pages = []
+    for (let i = start; i <= end; i++) {
+      pages.push(i)
+    }
+
+    return pages
+  })
 
 
   const setUrl = (url: string) => {
@@ -42,10 +55,11 @@ export const usePagination = defineStore('pagination', () => {
   }
 
   watch([() => page.value.currentPage, () => page.value.perPage], async () => {
+    UpdatePageData(page.value.currentPage, page.value.perPage)
     await getPaginationData()
   })
 
   return {
-    getPaginationData, setCurrentPage, currentData, page, setUrl
+    getPaginationData, UpdatePageData, currentData, page, setUrl, pagesToShow
   }
 })

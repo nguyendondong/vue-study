@@ -5,7 +5,7 @@ const route = useRoute()
 </script>
 
 <template>
-  <div class="container px-4 py-4 bg-white border rounded-lg">
+  <div class="px-4 py-4 bg-white border rounded-lg">
     <nav>
       <ol class="flex items-center gap-2">
         <li>

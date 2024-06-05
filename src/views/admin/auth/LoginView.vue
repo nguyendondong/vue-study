@@ -11,8 +11,7 @@ const errors = ref({} as any)
 const HandleLogin = async () => {
   {
     try {
-      await userState.login(email.value, password.value, rememberMe.value).then(async (res) => {
-      })
+      await userState.login(email.value, password.value, rememberMe.value)
     } catch (error: any) {
       errors.value = {}
       if (error.status === 403) {

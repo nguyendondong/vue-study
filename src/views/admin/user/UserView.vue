@@ -4,11 +4,6 @@ import PaginationView from '@/components/admin/pagination/PaginationView.vue'
 import { usePagination } from '@/stores/paginationState.ts'
 
 const paginationState = usePagination()
-
-
-defineEmits(
-  ['close']
-)
 const columns = ref(['ID', 'Name', 'Email', 'Role', 'Status'])
 
 onMounted(async () => {
@@ -19,7 +14,7 @@ onMounted(async () => {
 
 <template>
   <!-- component -->
-  <section class="container mx-auto pt-4">
+  <section class="mx-auto pt-4">
     <div class="flex flex-col">
       <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">

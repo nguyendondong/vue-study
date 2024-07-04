@@ -1,7 +1,7 @@
 {
   "extends": "@vue/tsconfig/tsconfig.dom.json",
   "include": [
-    "env.d.ts",
+    ".env",
     "src/**/*",
     "src/**/*.vue"
   ],
@@ -16,6 +16,10 @@
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "allowImportingTsExtensions": true,
     "noEmit": true,
+    "types": [
+      "node",
+      "vite/client"
+    ],
     "baseUrl": ".",
     "paths": {
       "@/*": [

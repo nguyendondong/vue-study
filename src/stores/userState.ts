@@ -52,9 +52,15 @@ export const useUserState = defineStore('userState', () => {
     await router.push('/auth/login')
   }
 
+  const verify = async (method: string, token: string) => {
+    await axios.get('/auth/' + method + '?token=' + token)
+
+    await router.push('/auth/login')
+  }
+
   const isLoggedIn = computed(() => {
     return !!localStorage.getItem('access_token')
   })
 
-  return { user, isLoggedIn, login, logout, getProfile, register }
+  return { user, isLoggedIn, login, logout, getProfile, register, verify }
 })

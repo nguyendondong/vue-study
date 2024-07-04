@@ -12,6 +12,7 @@ import LoginView from '@/views/admin/auth/LoginView.vue'
 import DashboardView from '@/views/admin/dashboard/DashboardView.vue'
 import RegisterView from '@/views/admin/auth/RegisterView.vue'
 import UserView from '@/views/admin/user/UserView.vue'
+import VeryfyView from '@/views/admin/auth/ConfirmView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -57,6 +58,11 @@ const router = createRouter({
           path: 'register',
           name: 'Register',
           component: RegisterView
+        },
+        {
+          path: 'confirm-email/:token',
+          name: 'verifyEmail',
+          component: VeryfyView
         }
       ]
     }

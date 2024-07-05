@@ -1,7 +1,6 @@
 import axios from 'axios'
 
 axios.defaults.withCredentials = true
-console.log(import.meta.env.BASE_URL)
 axios.defaults.baseURL = import.meta.env.VITE_API_URL + '/api/v1'
 
 axios.interceptors.response.use(

@@ -18,6 +18,7 @@ const HandleLogin = async () => {
         errors.value.message = error.data.errors
       } else {
         errors.value = error.data.errors
+        console.log(errors.value)
       }
     }
   }

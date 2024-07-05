@@ -2,9 +2,9 @@
 import { useUserState } from '@/stores/userState.ts'
 
 const userState = useUserState()
-const email = !userState.user
-  ? JSON.parse(localStorage.getItem('user') ?? '').email
-  : userState.user?.email
+const name = !userState.user
+  ? JSON.parse(localStorage.getItem('user') ?? '').name
+  : userState.user?.name
 </script>
 <template>
   <div class="relative w-64 flex-shrink-0 py-3">
@@ -14,7 +14,7 @@ const email = !userState.user
         <a class="flex-none text-xl font-semibold" href="#" aria-label="Brand">
           <img src="@/assets/images/backend/logo.png" alt="Logo" class="rounded-full w-20 h-20 overflow-auto mx-auto">
         </a>
-        <div class="text-xl mx-auto text-center">{{ email }}</div>
+        <div class="text-xl mx-auto text-center">{{ name }}</div>
       </div>
       <nav class="hs-accordion-group p-6 w-full flex flex-col flex-wrap" data-hs-accordion-always-open>
         <ul class="space-y-1.5">

@@ -6,7 +6,7 @@ import { useRouter } from 'vue-router'
 
 export const useUserState = defineStore('userState', () => {
   const user = ref<{
-    email: string
+    name: string
   }>()
   const router = useRouter()
 

@@ -20,7 +20,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div>Đang xác thuc ...</div>
+  <div>Đang xác thực ...</div>
 </template>
 
 <style scoped>

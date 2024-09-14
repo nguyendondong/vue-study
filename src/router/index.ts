@@ -8,19 +8,23 @@ declare global {
   }
 }
 import HomeView from '@/views/frontend/HomeView.vue'
-import LoginView from '@/views/admin/auth/LoginView.vue'
+import LoginView from '@/views/auth/LoginView.vue'
 import DashboardView from '@/views/admin/dashboard/DashboardView.vue'
-import RegisterView from '@/views/admin/auth/RegisterView.vue'
+import RegisterView from '@/views/auth/RegisterView.vue'
 import UserView from '@/views/admin/user/UserView.vue'
-import VeryfyView from '@/views/admin/auth/ConfirmView.vue'
+import VeryfyView from '@/views/auth/ConfirmView.vue'
+import CategoriesView from '@/views/admin/categories/CategoriesView.vue'
+import CreateCategoryView from '@/views/admin/categories/CreateCategoryView.vue'
+
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory(''),
   routes: [
     {
       path: '/',
       name: 'home',
       component: HomeView
+
     },
     {
       path: '/admin',
@@ -42,6 +46,16 @@ const router = createRouter({
           path: 'users',
           name: 'Users',
           component: UserView
+        },
+        {
+          path: 'categories',
+          name: 'Categories',
+          component: CategoriesView,
+          children: [{
+            path: 'create',
+            name: 'CreateCategory',
+            component: CreateCategoryView
+          }]
         }
       ]
     },
@@ -70,9 +84,11 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.name !== 'Login' && !localStorage.getItem('access_token') && !to.path.includes('auth')) {
+  const accessToken = !!localStorage.getItem('access_token')
+
+  if (!accessToken && to.path.startsWith('/admin')) {
     next({ name: 'Login' })
-  } else if (to.name === 'Admin') {
+  } else if (accessToken && to.path.startsWith('/auth')) {
     next({ name: 'Dashboard' })
   } else {
     next()

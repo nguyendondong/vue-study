@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 
-const route = useRoute()
+const router = useRoute()
 </script>
 
 <template>
@@ -11,7 +11,7 @@ const route = useRoute()
         <li>
           <RouterLink class="font-medium" to="/admin/dashboard"> Admin /</RouterLink>
         </li>
-        <li class="font-medium text-primary">{{ route.name }}</li>
+        <li class="font-medium text-primary">{{ router.name }}</li>
       </ol>
     </nav>
   </div>

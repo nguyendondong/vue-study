@@ -2,7 +2,6 @@ import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import axios from '@/config/axios.ts'
 import { useRouter } from 'vue-router'
-// import authHeader from '@/service/auth-header.ts'
 
 export const useUserState = defineStore('userState', () => {
   const user = ref<{
@@ -22,6 +21,7 @@ export const useUserState = defineStore('userState', () => {
     localStorage.setItem('refresh_token', data.refresh_token)
     localStorage.setItem('user', JSON.stringify(data.dataUser))
 
+    axios.defaults.baseURL = import.meta.env.VITE_BE_ADMIN_URL
     await router.push('/admin/dashboard')
   }
 
@@ -62,5 +62,11 @@ export const useUserState = defineStore('userState', () => {
     return !!localStorage.getItem('access_token')
   })
 
-  return { user, isLoggedIn, login, logout, getProfile, register, verify }
+  const availableAccessToken = async () => {
+    if (isLoggedIn.value) {
+      axios.defaults.baseURL = import.meta.env.VITE_BE_ADMIN_URL
+    }
+  }
+
+  return { user, isLoggedIn, login, logout, getProfile, register, verify, availableAccessToken }
 })

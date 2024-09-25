@@ -1,21 +1,22 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, render } from 'vue'
 import PaginationView from '@/components/admin/pagination/PaginationView.vue'
 import { usePagination } from '@/stores/paginationState.ts'
-import { useModalState } from '@/stores/modalState.ts'
+import ModalCategoryView from '@/views/admin/categories/modal/ModalCategoryView.vue'
+import { ModalType, useModalState } from '@/stores/modalState.ts'
+import { data } from 'autoprefixer'
 
 const paginationState = usePagination()
-const columns = ref(['ID', 'Name', 'Description'])
 const modalState = useModalState()
+const columns = ref(['ID', 'Name', 'Description'])
 
-const onOpenModal = () => {
-  modalState.setDataModal({
-    title: 'Modal Title 11111',
-    description: '2222Are you sure you want to deactivate your account? All of your data will be permanently removed. This action cannot be undone.',
-    confirm: 'Confirm3333',
-    cancel: '444Cancel'
-  })
-  modalState.toggleModal()
+const onOpenModal = (type: ModalType, data?: any, info?: any) => {
+  modalState.openModal()
+  modalState.setModalType(type)
+  modalState.setInformation(info)
+  modalState.setData(data)
+
+  console.log(modalState.modalData())
 }
 
 onMounted(async () => {
@@ -25,23 +26,15 @@ onMounted(async () => {
 </script>
 
 <template>
-  <!-- component -->
   <section class="mx-auto pt-4 flex justify-end gap-4">
     <button type="button"
             class="w- shadow-xl py-2.5 px-4 text-sm font-semibold rounded-full text-white bg-red-600 hover:bg-red-700 focus:outline-none"
-            @click="onOpenModal"> Create Category
+            @click="onOpenModal(ModalType.Create)"> Create Category
 
     </button>
+
+    <ModalCategoryView v-if="modalState.isOpen" :modalState={modalState} />
   </section>
-
-  <section class="mx-auto pt-4 flex justify-end gap-4">
-    <RouterLink type="button"
-                class="w- shadow-xl py-2.5 px-4 text-sm font-semibold rounded-full text-white bg-red-600 hover:bg-red-700 focus:outline-none"
-                to="/admin/categories/create"> Create
-
-    </RouterLink>
-  </section>
-
   <section class="mx-auto pt-4">
     <div class="flex flex-col">
       <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -105,14 +98,14 @@ onMounted(async () => {
                 </td>
                 <td class="px-4 py-4 text-sm whitespace-nowrap">
                   <div class="flex items-center gap-x-6">
-                    <button
-                      class="text-gray-500 transition-colors duration-200 dark:hover:text-indigo-500 dark:text-gray-300 hover:text-indigo-500 focus:outline-none">
-                      Archive
+                    <button @click="onOpenModal(ModalType.Update, { id: category.id })"
+                            class="text-gray-500 transition-colors duration-200 dark:hover:text-indigo-500 dark:text-gray-300 hover:text-indigo-500 focus:outline-none">
+                      Edit
                     </button>
 
                     <button
                       class="text-blue-500 transition-colors duration-200 hover:text-indigo-500 focus:outline-none">
-                      Download
+                      Delete
                     </button>
                   </div>
                 </td>

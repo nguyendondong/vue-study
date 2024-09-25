@@ -12,7 +12,5 @@ export default defaultConfig({
   icons: {
     ...genesisIcons
   },
-  props: {
-    validation: 'required|length:5,20'
-  }
+  props: {}
 })

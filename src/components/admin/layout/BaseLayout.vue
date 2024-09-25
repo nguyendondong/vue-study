@@ -16,7 +16,7 @@ const modelState = ref<{
   <div class="bg-[#f8f8f8] flex h-screen overflow-hidden">
     <SideBarView />
     <div class="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
-      <ModalView :model-state={modelState} />
+      <!--      <ModalView :model-state={modelState} />-->
       <main>
         <div class="mx-auto px-4">
           <BreadcrumbDefault />

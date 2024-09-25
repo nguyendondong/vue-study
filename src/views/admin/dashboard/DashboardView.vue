@@ -5,17 +5,6 @@ import { useModalState } from '@/stores/modalState.ts'
 const modalState = useModalState()
 const userState = useUserState()
 
-// const emit = defineEmits(['onOpenModal'])
-
-// const setData = () => {
-//   console.log('hiiiiii')
-//   return {
-//     title: 'Modal Title2',
-//     description: '2Are you sure you want to deactivate your account? All of your data will be permanently removed. This action cannot be undone.',
-//     confirm: 'Confirm2',
-//     cancel: 'Cancel2'
-//   }
-// }
 const onOpenModal = () => {
   modalState.setDataModal({
     title: 'Modal Title 11111',

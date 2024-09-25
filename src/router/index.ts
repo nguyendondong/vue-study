@@ -14,7 +14,6 @@ import RegisterView from '@/views/auth/RegisterView.vue'
 import UserView from '@/views/admin/user/UserView.vue'
 import VeryfyView from '@/views/auth/ConfirmView.vue'
 import CategoriesView from '@/views/admin/categories/CategoriesView.vue'
-import CreateCategoryView from '@/views/admin/categories/CreateCategoryView.vue'
 
 
 const router = createRouter({
@@ -50,12 +49,7 @@ const router = createRouter({
         {
           path: 'categories',
           name: 'Categories',
-          component: CategoriesView,
-          children: [{
-            path: 'create',
-            name: 'CreateCategory',
-            component: CreateCategoryView
-          }]
+          component: CategoriesView
         }
       ]
     },
